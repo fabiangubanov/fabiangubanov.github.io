@@ -1,6 +1,6 @@
 # Veyra
 
-[Download für Windows x64](https://github.com/fabiangubanov/fabiangubanov.github.io/releases/download/veyra-v1.1.0/Veyra-fuer-Freunde.zip)
+[Download für Windows x64](https://github.com/fabiangubanov/fabiangubanov.github.io/releases/latest/download/Veyra-fuer-Freunde.zip)
 
 Das ZIP vollständig entpacken und `Veyra.exe` starten. Neue Versionen lassen sich anschließend in Veyra über das Tray-Menü → **Nach Updates suchen** installieren.
 
