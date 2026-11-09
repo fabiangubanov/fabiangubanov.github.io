@@ -16,8 +16,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      SOURCE: 'https://believes-incomplete-significantly-cho.trycloudflare.com/952fae56fd8e74a673d27f014de3b7d28d190a369275d87e'
-      VERSION_TAG: 'veyra-v1.2.0'
+      SOURCE: 'https://mathematics-speech-decent-pda.trycloudflare.com/51fba24afbd2e472a891f961cb0dea317ff53049b542c3b9'
+      VERSION_TAG: 'veyra-v1.2.1'
     steps:
       - name: Retrieve prepared public release packages
         shell: bash
@@ -29,9 +29,9 @@ jobs:
             curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 "$SOURCE/$name" --output "$name"
           done
           cat > SHA256SUMS <<'HASHES'
-          43a77102a4a566376f0db6a647cf45f9558d37ae2fa6279f1df82922e07c667c  Veyra-update.zip
-          230b02a45e17dc47019d48e91c26e613e974bba56747a23d48941fdae9181b97  Veyra-fuer-Freunde.zip
-          472d45d29e1366601256232f59a020ac397565d836cccade4c5a54027345e858  latest.json
+          ad1f8a60f22ee97d343b4cd71f305bab1a00db210a8c404b8738195c88b1e158  Veyra-update.zip
+          73315d5d6544416db0a2cb25a66e71659ad549345e0b9e7f62d20242139b1676  Veyra-fuer-Freunde.zip
+          9b9e09ffe4206aab6b9e1599b77f7b6170e1d7a226daa80cd08eed154e86cdf5  latest.json
           HASHES
           sha256sum --check SHA256SUMS
       - name: Publish immutable version and stable signed update feed
@@ -42,7 +42,7 @@ jobs:
             echo "This version already exists; refusing to replace it."
             exit 1
           fi
-          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.2.0" --notes "Veyra-Profil ohne E-Mail und Passwort: Fortnite-Anzeigenamen eintragen und eigenen Truhenstand freiwillig mit anderen Veyra-Nutzern teilen. Die gemeinsame Spielerliste läuft derzeit auf dem PC des Betreibers und ist nur erreichbar, solange dieser Server läuft. Neue unbenutzte Zähler übernehmen einmalig eigene Truhen aus vorhandenen abgeschlossenen Replays ab 1. November 2026. Bestehende Zähler bleiben erhalten. P wird außerhalb von Fortnite nicht mehr abgefangen." --draft
+          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.2.1" --notes "Veyra-Profil ohne E-Mail und Passwort: Fortnite-Anzeigenamen eintragen und eigenen Truhenstand freiwillig mit anderen Veyra-Nutzern teilen. Die gemeinsame Spielerliste läuft derzeit auf dem PC des Betreibers und ist nur erreichbar, solange dieser Server läuft. Neue unbenutzte Zähler übernehmen einmalig eigene Truhen aus vorhandenen abgeschlossenen Replays ab 1. November 2026. Bestehende Zähler bleiben erhalten. P wird außerhalb von Fortnite nicht mehr abgefangen." --draft
           gh release upload "$VERSION_TAG" release/Veyra-update.zip release/Veyra-fuer-Freunde.zip release/latest.json release/SHA256SUMS
           gh release edit "$VERSION_TAG" --draft=false --latest=true
           if ! gh release view veyra-channel >/dev/null 2>&1; then
