@@ -16,8 +16,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      SOURCE: 'https://neighbor-give-capital-elite.trycloudflare.com/6504fbc8874022bd52be3127cfc6dea59b048b21f3eb0427'
-      VERSION_TAG: 'veyra-v1.1.0'
+      SOURCE: 'https://promised-like-liability-turned.trycloudflare.com/56c83d4da240aa9d09bb40d6886750446b9e57e7e35fd29c'
+      VERSION_TAG: 'veyra-v1.1.1'
     steps:
       - name: Retrieve prepared public release packages
         shell: bash
@@ -29,9 +29,9 @@ jobs:
             curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 "$SOURCE/$name" --output "$name"
           done
           cat > SHA256SUMS <<'HASHES'
-          5bb5015b32605b4ca251c890ea25b9be8707a646abc317ab2a8838c5b9a561ea  Veyra-update.zip
-          cbde13f284000dcdaef103a77393a4ba12e3237042bdb800fc94e34be0575dbf  Veyra-fuer-Freunde.zip
-          338e43b1c0eb61ef54f42782502661e213b2e2d30efb0969acfd4711130d4e1c  latest.json
+          cfda82e8d8cc5e0e2d7719905425b9b50ab87b52b90339c9a59420f2f34a628c  Veyra-update.zip
+          71e522126851941367c4d22b4f1c71ad1953a362edc3b9a77a03197657f37498  Veyra-fuer-Freunde.zip
+          f98e66bce0aeb7e877b6c4a7ad8b5383f0e235a2727d2faf71c23f9659ee4c1c  latest.json
           HASHES
           sha256sum --check SHA256SUMS
       - name: Publish immutable version and stable signed update feed
@@ -42,7 +42,7 @@ jobs:
             echo "This version already exists; refusing to replace it."
             exit 1
           fi
-          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.1.0" --notes "Erstinstallation: Veyra-fuer-Freunde.zip vollständig entpacken und Veyra.exe starten. Weitere Updates direkt über das Veyra-Tray-Menü installieren. Einstellungen und Truhenstände bleiben erhalten." --draft
+          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.1.1" --notes "Updatefenster ohne sichtbare Updateadresse. Menü, Verlauf und Fortune-Warnung übernehmen jetzt den gewählten Veyra-Stil einschließlich Liquid Glass, Frost, Weihnachten und Schnee. Einstellungen und Truhenstände bleiben erhalten." --draft
           gh release upload "$VERSION_TAG" release/Veyra-update.zip release/Veyra-fuer-Freunde.zip release/latest.json release/SHA256SUMS
           gh release edit "$VERSION_TAG" --draft=false --latest=true
           if ! gh release view veyra-channel >/dev/null 2>&1; then
