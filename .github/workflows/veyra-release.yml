@@ -1,5 +1,6 @@
 name: Publish Veyra release
 on:
+  workflow_dispatch:
   push:
     paths:
       - '.github/workflows/veyra-release.yml'
@@ -10,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
       GH_TOKEN: ${{ github.token }}
