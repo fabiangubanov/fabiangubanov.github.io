@@ -16,8 +16,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      SOURCE: 'https://collins-efficient-periods-balanced.trycloudflare.com/5b5510436d93e22d50027b332099ca59abdc090feb894a70'
-      VERSION_TAG: 'veyra-v1.3.2'
+      SOURCE: 'https://which-yard-books-polymer.trycloudflare.com/e6d9e290fb6402f93df539e7ea59ae898bd241a4a6129710'
+      VERSION_TAG: 'veyra-v1.3.4'
     steps:
       - name: Retrieve prepared public release packages
         shell: bash
@@ -29,9 +29,9 @@ jobs:
             curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 "$SOURCE/$name" --output "$name"
           done
           cat > SHA256SUMS <<'HASHES'
-          35c250c2046fab872afea295302a233fe0c2f97ee649594f68d237dbef0f132d  Veyra-update.zip
-          7d16b8d4b02231a09534264c0df7dd18087367a89d6e7ba68e2b0b77c630c00f  Veyra-fuer-Freunde.zip
-          d4c7b664e9b2ebd987523f367d96b715ab9fa8509af2b0ab2531a6ffa016a39b  latest.json
+          54ed657a2841fd32765df4ca16766d89bc09f8938e19c19b19e69bae3ad73b75  Veyra-update.zip
+          e880583998f8d6d0d98a8ea6f2c41107e84708b05b08d2dc09ec4d92ee1d83e8  Veyra-fuer-Freunde.zip
+          6b3dd224d2d4d8f03c50c357298fb47efa8ba783caa567920aa65f1bed879bca  latest.json
           HASHES
           sha256sum --check SHA256SUMS
       - name: Publish immutable version and stable signed update feed
@@ -42,7 +42,7 @@ jobs:
             echo "This version already exists; refusing to replace it."
             exit 1
           fi
-          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.2" --notes "Fill-Squad-HUD fuer die letzte abgeschlossene Replay-Runde. Zeigt lokal zugeordnete Truhenoeffnungen anderer Teammitglieder als Mindestzahl, mit Replay-Kennungen statt unzuverlaessigen Spielernamen. Keine Live- oder Kontogesamtstaende: entfernte Oeffnungen koennen im eigenen Replay fehlen, -- bedeutet keine zugeordneten Daten. Eigener Gesamtzaehler bleibt unveraendert. Automatische Updates aus 1.3.1 bleiben enthalten und installieren nach dem Schliessen von Fortnite." --draft
+          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.4" --notes "Live-Truhentracking funktioniert unabhaengig von der Sichtbarkeit des Chest-HUD. Interaktion per E oder F einstellbar; Mausrad runter bleibt zusaetzlich unterstuetzt. Tastaturaktionen brauchen vorherige Truhen-Evidenz, um fremde Team-XP nicht ungeprueft zu zaehlen. Kompakteres Squad-Replay-HUD. Explizite lesbare Anzeigenamen werden aus Replays automatisch uebernommen, soweit vorhanden; unbekannte oder anonymisierte Namen werden nicht geraten. Replay-Abgleich und automatische Updates bleiben enthalten. Remote-Spielbilder anderer Nutzer sind nicht verfuegbar; deren Live-Erkennung muss lokal laufen." --draft
           gh release upload "$VERSION_TAG" release/Veyra-update.zip release/Veyra-fuer-Freunde.zip release/latest.json release/SHA256SUMS
           gh release edit "$VERSION_TAG" --draft=false --latest=true
           if ! gh release view veyra-channel >/dev/null 2>&1; then
