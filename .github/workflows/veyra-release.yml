@@ -16,8 +16,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      SOURCE: 'https://commitment-imperial-concerts-fellow.trycloudflare.com/0139365e8b91db346b311f3ffaba0d929737c7ed35e4917e'
-      VERSION_TAG: 'veyra-v1.3.7'
+      SOURCE: 'https://minds-handbook-constantly-enzyme.trycloudflare.com/fb15085d7c4504f2b588875271336ee45b486f7b287e9e8e'
+      VERSION_TAG: 'veyra-v1.3.10'
     steps:
       - name: Retrieve prepared public release packages
         shell: bash
@@ -29,9 +29,9 @@ jobs:
             curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 "$SOURCE/$name" --output "$name"
           done
           cat > SHA256SUMS <<'HASHES'
-          0f15bfc0be3841595c0ada064888fbc703db973d487a8f063f0e373ffc41d422  Veyra-update.zip
-          d9c85bec4158d5c3615a9fdf9fd48b5dadb12f4713bcb8a230d01a7a364f271f  Veyra-fuer-Freunde.zip
-          da063eda52cecc0c23a2ec967cdb5af55eccdc5f513057be873ae71c52d380ed  latest.json
+          ec08629ab8932d2c89df791b4a9c23f6c2d4e14d1b5cae58096e36d206a686be  Veyra-update.zip
+          a05247ff0a08a8edd08547969ccf22f2e7ace9a825f5a60b710a9ec76c3cfc32  Veyra-fuer-Freunde.zip
+          2afc7a4ef06b07c9c14e19f9d4334f1062355aaa02a85f806969c87fa81da8dd  latest.json
           HASHES
           sha256sum --check SHA256SUMS
       - name: Publish immutable version and stable signed update feed
@@ -42,7 +42,7 @@ jobs:
             echo "This version already exists; refusing to replace it."
             exit 1
           fi
-          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.7" --notes "Gespeicherter Mitspieler-Gesamtzaehler fuer Duo, Trio und Squad: addiert die im eigenen Replay erfassten Truhen anderer Teammitglieder ueber abgeschlossene Runden. Eigene Truhen sind ausgeschlossen, auch beim Laden zuvor gespeicherter Staende. Jede Replay-ID zaehlt nur einmal; Neustarts und erneutes Scannen zaehlen nicht doppelt. Verbesserte Auswertungen ergaenzen nur die Differenz. Vorhandene aeltere Replays werden im Hintergrund nachgelesen. Anzeige als Mindestzahl mit Anzahl der erfassten Team-Runden; entfernte Oeffnungen koennen im Replay fehlen. Der persoenliche Zaehler bleibt unabhaengig." --draft
+          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.10" --notes "Bereit-Warnung prueft jetzt den ausgewaehlten Sprite direkt ueber READY: erkannter Fortune/Plundarrgh laesst das Bereitmachen ohne Warnung zu; bei fehlendem oder unklarem Sprite bleibt die Warnung. Automatische Namen im Team-Replay-HUD werden aus dem separaten Namensdatenblock gelesen und ueber die PlayerState-ID zugeordnet. Bereits archivierte Runden werden dafuer nachgelesen. Neuer vollstaendiger Replay-Mindeststand-Abgleich seit Saisonstart: vorhandene eigene Replay-Oeffnungen koennen einen zu niedrigen Gesamtzaehler anheben, hoehere gespeicherte Staende bleiben erhalten. Atomare Replay-Markierungen verhindern doppelte Nachtraege nach Neustarts. Fuer geloeschte/nicht aufgezeichnete Replays lassen sich keine fehlenden Zahlen bestimmen. Auto-Update installiert nach Schliessen von Fortnite." --draft
           gh release upload "$VERSION_TAG" release/Veyra-update.zip release/Veyra-fuer-Freunde.zip release/latest.json release/SHA256SUMS
           gh release edit "$VERSION_TAG" --draft=false --latest=true
           if ! gh release view veyra-channel >/dev/null 2>&1; then
