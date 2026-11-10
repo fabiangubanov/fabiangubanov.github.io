@@ -16,8 +16,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      SOURCE: 'https://gotta-planet-zoo-stake.trycloudflare.com/ea675d2e9138e6aef3014e7cc33c12a2dd0cc7a4c27b4daf'
-      VERSION_TAG: 'veyra-v1.3.5'
+      SOURCE: 'https://commitment-imperial-concerts-fellow.trycloudflare.com/0139365e8b91db346b311f3ffaba0d929737c7ed35e4917e'
+      VERSION_TAG: 'veyra-v1.3.7'
     steps:
       - name: Retrieve prepared public release packages
         shell: bash
@@ -29,9 +29,9 @@ jobs:
             curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 "$SOURCE/$name" --output "$name"
           done
           cat > SHA256SUMS <<'HASHES'
-          7b1c4c12e248451a830e185e13719cd2941ff82442b995f589fea4ddfade6d9b  Veyra-update.zip
-          da568a403e139e80985aa59d1739c05812530c8652b124fffe59d5c39e0988c0  Veyra-fuer-Freunde.zip
-          cec37b65020048946f10f479c364c00c1edf72d7bcad21125ca3a6212da54d3b  latest.json
+          0f15bfc0be3841595c0ada064888fbc703db973d487a8f063f0e373ffc41d422  Veyra-update.zip
+          d9c85bec4158d5c3615a9fdf9fd48b5dadb12f4713bcb8a230d01a7a364f271f  Veyra-fuer-Freunde.zip
+          da063eda52cecc0c23a2ec967cdb5af55eccdc5f513057be873ae71c52d380ed  latest.json
           HASHES
           sha256sum --check SHA256SUMS
       - name: Publish immutable version and stable signed update feed
@@ -42,7 +42,7 @@ jobs:
             echo "This version already exists; refusing to replace it."
             exit 1
           fi
-          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.5" --notes "Replay-Nachtraege werden jetzt als kurze Meldung im gewaehlten Veyra-Design angezeigt: +7 Truhen nachgetragen / Durch Replay bestaetigt. Der Hinweis erscheint ausschliesslich fuer erfolgreich gespeicherte Ergaenzungen des laufenden Replay-Abgleichs, fasst mehrere Nachtraege zusammen und bleibt fuenf sichtbare Sekunden stehen. Bei verborgenem HUD wartet die Meldung auf die naechste Anzeige. Bereits erfasste Replays und Live-Zaehlungen loesen keinen Replay-Hinweis aus. Position ist im HUD-Editor verschiebbar." --draft
+          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.7" --notes "Gespeicherter Mitspieler-Gesamtzaehler fuer Duo, Trio und Squad: addiert die im eigenen Replay erfassten Truhen anderer Teammitglieder ueber abgeschlossene Runden. Eigene Truhen sind ausgeschlossen, auch beim Laden zuvor gespeicherter Staende. Jede Replay-ID zaehlt nur einmal; Neustarts und erneutes Scannen zaehlen nicht doppelt. Verbesserte Auswertungen ergaenzen nur die Differenz. Vorhandene aeltere Replays werden im Hintergrund nachgelesen. Anzeige als Mindestzahl mit Anzahl der erfassten Team-Runden; entfernte Oeffnungen koennen im Replay fehlen. Der persoenliche Zaehler bleibt unabhaengig." --draft
           gh release upload "$VERSION_TAG" release/Veyra-update.zip release/Veyra-fuer-Freunde.zip release/latest.json release/SHA256SUMS
           gh release edit "$VERSION_TAG" --draft=false --latest=true
           if ! gh release view veyra-channel >/dev/null 2>&1; then
