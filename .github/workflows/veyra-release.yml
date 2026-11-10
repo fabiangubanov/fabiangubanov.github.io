@@ -16,8 +16,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      SOURCE: 'https://passage-admissions-ricky-impressed.trycloudflare.com/72d6b0aea36b9449c21ab5716a7d65792b314cafbeb19659'
-      VERSION_TAG: 'veyra-v1.3.1'
+      SOURCE: 'https://collins-efficient-periods-balanced.trycloudflare.com/5b5510436d93e22d50027b332099ca59abdc090feb894a70'
+      VERSION_TAG: 'veyra-v1.3.2'
     steps:
       - name: Retrieve prepared public release packages
         shell: bash
@@ -29,9 +29,9 @@ jobs:
             curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 "$SOURCE/$name" --output "$name"
           done
           cat > SHA256SUMS <<'HASHES'
-          779462f35135081d0463cf6a37480e228c663335dd7d4c5e1616795128d706fe  Veyra-update.zip
-          b130833a4faaca6178e3235f90599d669a5cb0817e9b49c8bbf19ed33554a197  Veyra-fuer-Freunde.zip
-          8ba8be40bc0a3ddfeb4995128ce9b7fac31ae81ac0ecc5d6804ce9d90a87e50f  latest.json
+          35c250c2046fab872afea295302a233fe0c2f97ee649594f68d237dbef0f132d  Veyra-update.zip
+          7d16b8d4b02231a09534264c0df7dd18087367a89d6e7ba68e2b0b77c630c00f  Veyra-fuer-Freunde.zip
+          d4c7b664e9b2ebd987523f367d96b715ab9fa8509af2b0ab2531a6ffa016a39b  latest.json
           HASHES
           sha256sum --check SHA256SUMS
       - name: Publish immutable version and stable signed update feed
@@ -42,7 +42,7 @@ jobs:
             echo "This version already exists; refusing to replace it."
             exit 1
           fi
-          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.1" --notes "Automatische Updates: Veyra prueft im Hintergrund, laedt signierte neue Versionen und installiert sie automatisch mit Neustart, sobald Fortnite geschlossen ist. Bereits laufende Matches werden nicht unterbrochen. Automatische Updates sind standardmaessig aktiv und im Updatefenster abschaltbar. Enthalten sind auch der Replay-Rueckstandsabgleich, Spielerstaende im HUD, Lobby-Namenserkennung und die dauerhafte Cloudflare-Spielerliste. Fuer bisherige Versionen ist einmalig eine manuelle Aktualisierung erforderlich." --draft
+          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.2" --notes "Fill-Squad-HUD fuer die letzte abgeschlossene Replay-Runde. Zeigt lokal zugeordnete Truhenoeffnungen anderer Teammitglieder als Mindestzahl, mit Replay-Kennungen statt unzuverlaessigen Spielernamen. Keine Live- oder Kontogesamtstaende: entfernte Oeffnungen koennen im eigenen Replay fehlen, -- bedeutet keine zugeordneten Daten. Eigener Gesamtzaehler bleibt unveraendert. Automatische Updates aus 1.3.1 bleiben enthalten und installieren nach dem Schliessen von Fortnite." --draft
           gh release upload "$VERSION_TAG" release/Veyra-update.zip release/Veyra-fuer-Freunde.zip release/latest.json release/SHA256SUMS
           gh release edit "$VERSION_TAG" --draft=false --latest=true
           if ! gh release view veyra-channel >/dev/null 2>&1; then
