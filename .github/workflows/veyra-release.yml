@@ -16,8 +16,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      SOURCE: 'https://veyra-downloads.chickensmp.workers.dev/v1.3.11'
-      VERSION_TAG: 'veyra-v1.3.11'
+      SOURCE: 'https://veyra-downloads.chickensmp.workers.dev/v1.3.13'
+      VERSION_TAG: 'veyra-v1.3.13'
     steps:
       - name: Retrieve prepared public release packages
         shell: bash
@@ -29,9 +29,9 @@ jobs:
             curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 "$SOURCE/$name" --output "$name"
           done
           cat > SHA256SUMS <<'HASHES'
-          b74bd600c27057255d8b2416bb187a73af26ba4dce3d2518a56f5599b9f6102e  Veyra-update.zip
-          bfb8c34499ef86b8f130cd165a929028288fb35ef7cbc05a56730bc55db6e8dd  Veyra-fuer-Freunde.zip
-          673ea499f4307b935708cb9d3171e0bcbd25e17530713910e1ecdb8b13c08ee2  latest.json
+          77fbfb072349c24de1f3ab2f186c061069062b99a20636bc7ebbda9896ef9181  Veyra-update.zip
+          ad21c86844da9f7586444812c509b52490808dd7e4165647b8ed2d0f7f184ff2  Veyra-fuer-Freunde.zip
+          84deb037ec2281e3d224d2306581f3573d93fd5d9ecfc664d847dd7eedc2fed5  latest.json
           HASHES
           sha256sum --check SHA256SUMS
       - name: Publish immutable version and stable signed update feed
@@ -42,7 +42,7 @@ jobs:
             echo "This version already exists; refusing to replace it."
             exit 1
           fi
-          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.11" --notes "Verbesserte Tastatur-Truhenerkennung: Such-Hinweis wird separat gelesen, ein kurzer vorgemerkter Tastendruck kann mit einer nachfolgenden Truhenbestaetigung verbunden werden; abgelaufene Eingaben und fremde XP ohne eigene Evidenz bleiben ausgeschlossen. Tastatur-Autowiederholungen erzeugen keine neuen Interaktionen. Bei aktiviertem Teilen zeigt die Spielerliste jetzt App-Version, Tracking-Zustand, Interaktionstaste und Zeit der letzten Live-Zaehlung; keine Spielbilder oder OCR-Texte werden dafuer uebertragen. Cloudflare Community/D1 unterstuetzt diese signierten Metadaten und entfernt sie beim Zuruecknehmen der Freigabe. Oeffentliche Update-Dateien sind nun auch direkt auf Cloudflare verfuegbar. Live-Ursache auf fremden PCs muss nach deren Aktualisierung weiterhin geprueft werden." --draft
+          gh release create "$VERSION_TAG" --target "$GITHUB_SHA" --title "Veyra 1.3.13" --notes "Team-HUD zeigt klar die letzte abgeschlossene Runde: Spielernamen mit erfassten Oeffnungen dieser Runde, darunter Runde gesamt ohne den eigenen Spieler. Der gespeicherte Overall-Zaehler aller archivierten Team-Runden bleibt getrennt sichtbar. Mehrere Replay-PlayerStates desselben Namens werden in der Rundenanzeige zusammengefasst. Die automatische eigene Namenserkennung gleicht typische OCR-Verwechslungen wie pvqo/pvq0 mit dem bestaetigten eigenen Replay-Namen ab; unterschiedliche andere Namen werden dadurch nicht zusammengelegt. Replay-Zahlen bleiben Mindestzahlen, weil entfernte Oeffnungen im eigenen Replay fehlen koennen. Aktualisierung der Rundenwerte nach Abschluss und Auswertung des Replays." --draft
           gh release upload "$VERSION_TAG" release/Veyra-update.zip release/Veyra-fuer-Freunde.zip release/latest.json release/SHA256SUMS
           gh release edit "$VERSION_TAG" --draft=false --latest=true
           if ! gh release view veyra-channel >/dev/null 2>&1; then
